@@ -1,23 +1,30 @@
-node {
-  try {
-    stage('Checkout') {
-      checkout scm
+pipeline {
+    agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 3000:3000'
+        }
     }
-    stage('Environment') {
-      sh 'git --version'
-      echo "Branch: ${env.BRANCH_NAME}"
-      sh 'docker -v'
-      sh 'printenv'
+    environment { 
+        CI = 'true'
     }
-    stage('Deploy'){
-      if(env.BRANCH_NAME == 'master'){
-        sh 'docker build -t react-app --no-cache .'
-        sh 'docker tag react-app localhost:5000/app'
-        sh 'docker run -it -p 5002:3000 -d localhost:5000/app'
-      }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
+                input message: 'Finished using the web site? (Click "Proceed" to continue)' 
+                sh './jenkins/scripts/kill.sh' 
+            }
+        }
     }
-  }
-  catch (err) {
-    throw err
-  }
 }
