@@ -44,7 +44,7 @@ class Dashboard extends React.Component {
                         <a href={DEMO.BLANK_LINK}><img className="rounded-circle" style={{width: '40px'}} src={avatar1} alt="activity-user"/></a>
                     </div>
                     <div className="media-body">
-                        <h6 className="m-0 d-inline">Frida Thomse</h6>
+                        <h6 className="m-0 d-inline"> Thomse Frida</h6>
                         <span className="float-right d-flex  align-items-center"><i className="fa fa-caret-down f-22 m-r-10 text-c-red"/>1032</span>
                     </div>
                 </div>

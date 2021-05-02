@@ -1,36 +1,15 @@
-# Extending image
-FROM node:carbon
+FROM node:12.2.0-alpine
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
+# set working directory
+WORKDIR /app
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-# Versions
-RUN npm -v
-RUN node -v
-
-# Install app dependencies
-COPY package.json /usr/src/app/
-COPY package-lock.json /usr/src/app/
-
+# install and cache app dependencies
+COPY package.json /app/package.json
 RUN npm install
 
-# Bundle app source
-COPY . /usr/src/app
 
-# Port to listener
-EXPOSE 3000
-
-# Environment variables
-ENV NODE_ENV production
-ENV PORT 3000
-ENV PUBLIC_PATH "/"
-
-RUN npm run start
-
-# Main command
-CMD [ "npm", "run", "start" ]
+# start app
+CMD ["npm", "start"]
