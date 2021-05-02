@@ -1,39 +1,20 @@
-# Extending image
-FROM node:carbon
-
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
-
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-# Versions
-RUN npm -v
-RUN node -v
-
-# Install app dependencies
-COPY package.json /usr/src/app/
-COPY package-lock.json /usr/src/app/
-
-RUN npm install
-
-# Bundle app source
-COPY . /usr/src/app
-
-# Port to listener
-EXPOSE 3000
-
-# Serve
-RUN npm install -g serve
-
-# Environment variables
-ENV NODE_ENV production
-ENV PORT 3000
-ENV PUBLIC_PATH "/"
-
-RUN npm run build
-
-# Main command
-CMD [ "serve", "-s", "build", "-l", "3000"]
+# pull the official base image  
+FROM node:13.12.0-alpine  
+ 
+# set your working directory  
+WORKDIR /app  
+ 
+# add `/app/node_modules/.bin` to $PATH  
+ENV PATH /app/node_modules/.bin:$PATH  
+ 
+# install application dependencies  
+COPY package.json ./  
+COPY package-lock.json ./  
+RUN npm install --silent  
+RUN npm install react-scripts@3.4.1 -g  
+ 
+# add app  
+COPY . ./  
+ 
+# will start app  
+CMD ["npm", "start"] 
