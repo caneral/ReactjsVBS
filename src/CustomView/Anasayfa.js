@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
                     </div>
                     <div className="media-body">
                         <h6 className="m-0 d-inline">Silje Larsen</h6>
-                        <span className="float-right d-flex  align-items-center"><i className="fa fa-caret-up f-22 m-r-10 text-c-green"/>3784</span>
+                        <span className="float-right d-flex  align-items-center"><i className="fa fa-caret-up f-22 m-r-10 text-c-green"/>3789</span>
                     </div>
                 </div>
                 <div className="media friendlist-box align-items-center justify-content-center m-b-20">
