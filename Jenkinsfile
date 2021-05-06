@@ -13,7 +13,7 @@ node {
       if(env.BRANCH_NAME == 'master'){
         sh 'docker build -t react-app --no-cache .'
         sh 'docker tag react-app localhost:5000/app'
-        sh 'docker-compose -f docker-compose.yml up -d'
+        sh 'docker stack deploy -c docker-stack.yml react'
       }
     }
   }
