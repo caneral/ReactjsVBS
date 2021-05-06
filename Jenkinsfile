@@ -14,7 +14,9 @@ node {
         sh 'docker build -t react-app --no-cache .'
         sh 'docker tag react-app localhost:5000/app'
         sh 'cd'
+        sh 'pwd'
         sh 'cd ..'
+        sh 'pwd'
         sh 'cd reactDockerfiles'
         sh 'docker-compose -f docker-compose.yml up -d'
       }
