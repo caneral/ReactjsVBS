@@ -13,9 +13,9 @@ node {
       if(env.BRANCH_NAME == 'master'){
         sh 'docker build -t react-app --no-cache .'
         sh 'docker tag react-app localhost:5000/app'
-        dir('/var/reactDockerfiles') {
-           sh "pwd"
-        }
+        sh 'pwd'
+        sh 'cd /var/reactDockerfiles'
+        sh 'pwd'
         sh 'docker-compose -f docker-compose.yml up -d'
       }
     }
