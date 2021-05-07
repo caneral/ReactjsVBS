@@ -104,7 +104,7 @@ const AdminLayout = (props) => {
                                                     </Route>
                                                     <Route path="/anasayfa">
                                                         {
-                                                        isUserLoggedIn ? <Anasayfa/> : <Redirect to="/auth/login"/>
+                                                        isUserLoggedIn ? <Anasayfa/> : <Redirect to="/auth/signin"/>
 
                                                         }
                                                     </Route>
