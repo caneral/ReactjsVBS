@@ -183,7 +183,7 @@ export default {
                             id: 'signin-1',
                             title: 'Sign in',
                             type: 'item',
-                            url: '/auth/signin-1',
+                            url: '/auth/signin',
                             target: true,
                             breadcrumbs: false
                         }

@@ -20,7 +20,7 @@ const login = (userName, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
- window.location.href();
+  window.location.href();
   
 };
 

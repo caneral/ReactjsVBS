@@ -92,7 +92,7 @@ class NavRight extends Component {
                                 <div className="pro-head">
                                     <img src={Avatar2} className="img-radius" alt="User Profile"/>
                                     <span>Caner AL</span>
-                                    <a href={"/auth/signin-1"} className="dud-logout" title="Logout" onClick={logOut}>
+                                    <a href={"/auth/signin"} className="dud-logout" title="Logout" onClick={logOut}>
                                         <i className="feather icon-log-out"/>
                                     </a>
                                 </div>
