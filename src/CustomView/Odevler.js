@@ -3,8 +3,8 @@ import {Row, Col, Card, Table} from 'react-bootstrap';
 
 import Aux from "../hoc/_Aux";
 
-class BootstrapTable extends React.Component {
-    render() {
+const Odevler = () => {
+   
         return (
             <Aux>
                 <Row>
@@ -55,7 +55,8 @@ class BootstrapTable extends React.Component {
                 </Row>
             </Aux>
         );
-    }
+    
 }
 
-export default BootstrapTable;
+export default Odevler;
+

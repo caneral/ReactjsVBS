@@ -1,4 +1,5 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component, Suspense, useEffect, useState } from 'react';
+
 import {Route, Switch, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Fullscreen from "react-full-screen";
@@ -13,54 +14,69 @@ import Aux from "../../../hoc/_Aux";
 import * as actionTypes from "../../../store/actions";
 
 import './app.scss';
+import Odevler from '../../../CustomView/Odevler';
+import OdevOlustur from '../../../CustomView/OdevOlustur';
+import Ogrenciler from '../../../CustomView/Ogrenciler';
+import AuthService from "../../../Services/AuthService";
+import Anasayfa from '../../../CustomView/Anasayfa';
 
-class AdminLayout extends Component {
+const AdminLayout = (props) => {
+    const isUserLoggedIn = localStorage.getItem('user')
+    const [admin,setShowAdminBoard] = useState(false);
 
-    fullScreenExitHandler = () => {
-        if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
-            this.props.onFullScreenExit();
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+          setShowAdminBoard(user.role.includes("Admin"));
         }
-    };
+    
+      }, []);
+    // fullScreenExitHandler = () => {
+    //     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+    //         props.onFullScreenExit();
+    //     }
+    // };
 
-    componentWillMount() {
-        if (this.props.windowWidth > 992 && this.props.windowWidth <= 1024 && this.props.layout !== 'horizontal') {
-            this.props.onComponentWillMount();
-        }
-    }
+    // componentWillMount() {
+    //     if (props.windowWidth > 992 && props.windowWidth <= 1024 && props.layout !== 'horizontal') {
+    //         props.onComponentWillMount();
+    //     }
+    // }
 
-    mobileOutClickHandler() {
-        if (this.props.windowWidth < 992 && this.props.collapseMenu) {
-            this.props.onComponentWillMount();
-        }
-    }
+    // mobileOutClickHandler() {
+    //     if (props.windowWidth < 992 && props.collapseMenu) {
+    //         props.onComponentWillMount();
+    //     }
+    // }
 
-    render() {
+  
 
         /* full screen exit call */
-        document.addEventListener('fullscreenchange', this.fullScreenExitHandler);
-        document.addEventListener('webkitfullscreenchange', this.fullScreenExitHandler);
-        document.addEventListener('mozfullscreenchange', this.fullScreenExitHandler);
-        document.addEventListener('MSFullscreenChange', this.fullScreenExitHandler);
+        // document.addEventListener('fullscreenchange', fullScreenExitHandler);
+        // document.addEventListener('webkitfullscreenchange', fullScreenExitHandler);
+        // document.addEventListener('mozfullscreenchange', fullScreenExitHandler);
+        // document.addEventListener('MSFullscreenChange', fullScreenExitHandler);
 
-        const menu = routes.map((route, index) => {
-            return (route.component) ? (
-                <Route
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                    name={route.name}
-                    render={props => (
-                        <route.component {...props} />
-                    )} />
-            ) : (null);
-        });
+        // const menu = routes.map((route, index) => {
+        //     return (route.component) ? (
+        //         <Route
+        //             key={index}
+        //             path={route.path}
+        //             exact={route.exact}
+        //             name={route.name}
+        //             render={props => (
+        //                 <route.component {...props} />
+        //             )} />
+        //     ) : (null);
+        // });
 
         return (
             <Aux>
-                <Fullscreen enabled={this.props.isFullScreen}>
+                <Fullscreen enabled={props.isFullScreen}>
                     <Navigation />
                     <NavBar />
-                    <div className="pcoded-main-container" onClick={() => this.mobileOutClickHandler}>
+                    {/* onClick={() => mobileOutClickHandler} */}
+                    <div className="pcoded-main-container" >
                         <div className="pcoded-wrapper">
                             <div className="pcoded-content">
                                 <div className="pcoded-inner-content">
@@ -69,8 +85,29 @@ class AdminLayout extends Component {
                                         <div className="page-wrapper">
                                             <Suspense fallback={<Loader/>}>
                                                 <Switch>
-                                                    {menu}
-                                                    <Redirect from="/" to={this.props.defaultPath} />
+                                                    {/* {menu} */}
+                                                    {/* <Redirect from="/" to={props.defaultPath} /> */}
+                                                    <Route path="/odev/odevler" >
+                                                        {
+                                                            isUserLoggedIn ? admin ? <Odevler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                        }
+                                                    </Route>
+                                                    <Route path="/odev/odev-olustur">
+                                                    {
+                                                            isUserLoggedIn ? admin ? <OdevOlustur/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                        }
+                                                    </Route>
+                                                    <Route path="/ogrenci/ogrenciler">
+                                                    {
+                                                            isUserLoggedIn ? admin ? <Ogrenciler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                    }
+                                                    </Route>
+                                                    <Route path="/anasayfa">
+                                                        {
+                                                        isUserLoggedIn ? <Anasayfa/> : <Redirect to="/auth/login"/>
+
+                                                        }
+                                                    </Route>
                                                 </Switch>
                                             </Suspense>
                                         </div>
@@ -83,7 +120,7 @@ class AdminLayout extends Component {
             </Aux>
         );
     }
-}
+
 
 const mapStateToProps = state => {
     return {
