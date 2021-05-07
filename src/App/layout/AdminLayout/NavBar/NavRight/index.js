@@ -8,14 +8,18 @@ import DEMO from "../../../../../store/constant";
 import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
 import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
 import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
-
+import AuthService from "../../../../../Services/AuthService";
 class NavRight extends Component {
     state = {
         listOpen: false
     };
 
     render() {
+        const currentUser = AuthService.getCurrentUser();
+        const logOut = () => {
+            AuthService.logout();
 
+          };
         return (
             <Aux>
                 <ul className="navbar-nav ml-auto">
@@ -40,7 +44,7 @@ class NavRight extends Component {
                                         <div className="media">
                                             <img className="img-radius" src={Avatar1} alt="Generic placeholder"/>
                                             <div className="media-body">
-                                                <p><strong>John Doe</strong><span className="n-time text-muted"><i
+                                                <p><strong>Caner AL</strong><span className="n-time text-muted"><i
                                                     className="icon feather icon-clock m-r-10"/>30 min</span></p>
                                                 <p>New ticket Added</p>
                                             </div>
@@ -86,17 +90,16 @@ class NavRight extends Component {
                             </Dropdown.Toggle>
                             <Dropdown.Menu alignRight className="profile-notification">
                                 <div className="pro-head">
-                                    <img src={Avatar1} className="img-radius" alt="User Profile"/>
-                                    <span>John Doe</span>
-                                    <a href={DEMO.BLANK_LINK} className="dud-logout" title="Logout">
+                                    <img src={Avatar2} className="img-radius" alt="User Profile"/>
+                                    <span>Caner AL</span>
+                                    <a href={"/auth/signin-1"} className="dud-logout" title="Logout" onClick={logOut}>
                                         <i className="feather icon-log-out"/>
                                     </a>
                                 </div>
                                 <ul className="pro-body">
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-settings"/> Settings</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profile</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-mail"/> My Messages</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-lock"/> Lock Screen</a></li>
+                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-settings"/> Ayarlar</a></li>
+                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profil</a></li>
+                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-mail"/> Mesajlarım</a></li>
                                 </ul>
                             </Dropdown.Menu>
                         </Dropdown>

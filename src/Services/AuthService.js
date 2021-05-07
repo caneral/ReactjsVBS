@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwtDecode from 'jwt-decode';
+import { useHistory } from "react-router";
 const API_URL = "https://caneral.me/vbsadmin/api/v1/login";
 
 const login = (userName, password) => {
@@ -19,6 +20,8 @@ const login = (userName, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
+ window.location.href();
+  
 };
 
 const getCurrentUser = () => {
