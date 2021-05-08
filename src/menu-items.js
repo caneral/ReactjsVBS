@@ -4,6 +4,7 @@ export default {
             id: 'navigation',
             type: 'group',
             icon: 'icon-navigation',
+            role: 'Admin',
             children: [
                 {
                     id: 'dashboard',
@@ -19,6 +20,7 @@ export default {
             title: 'Ödev',
             type: 'group',
             icon: 'icon-group',
+            role: 'Admin',
             children: [
                 {
                     id: 'form-basic',
@@ -41,6 +43,7 @@ export default {
             title: 'ÖĞRENCİ',
             type: 'group',
             icon: 'icon-group',
+            role: 'User',
             children: [
                 {
                     id: 'form-basic',

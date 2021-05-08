@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import config from '../../../../config';
@@ -6,38 +6,39 @@ import navigation from '../../../../menu-items';
 import DEMO from "../../../../store/constant";
 import Aux from "../../../../hoc/_Aux";
 
-class Breadcrumb extends Component {
-    state = {
-        main: [],
-        item: []
-    };
+const Breadcrumb = (props) => {
+     const[main,setMain]= useState([]);
+     const[item,setItem]= useState([]);
+    const isUserLoggedIn = localStorage.getItem('user')
 
-    componentDidMount() {
+
+    useEffect(() => {
         (navigation.items).map((item, index) => {
-            if (item.type && item.type === 'group') {
-                this.getCollapse(item, index);
-            }
-            return false;
-        });
-    };
-
-    componentWillReceiveProps = () => {
+                    if (item.type && item.type === 'group') {
+                        getCollapse(item, index);
+                    }
+                    return false;
+                });
+    }, [])
+    useEffect( () => {
         (navigation.items).map((item, index) => {
-            if (item.type && item.type === 'group') {
-                this.getCollapse(item);
-            }
-            return false;
-        });
-    };
+                    if (item.type && item.type === 'group') {
+                        getCollapse(item);
+                    }
+                    return false;
+                });
+    }, [navigation.items])
 
-    getCollapse = (item) => {
+
+    const getCollapse = (item) => {
         if (item.children) {
             (item.children).filter( collapse => {
                 if (collapse.type && collapse.type === 'collapse') {
-                    this.getCollapse(collapse,);
+                    getCollapse(collapse,);
                 } else if (collapse.type && collapse.type === 'item') {
                     if (document.location.pathname === config.basename+collapse.url) {
-                        this.setState({item: collapse, main: item});
+                        setItem(collapse);
+                        setMain(item);
                     }
                 }
                 return false;
@@ -45,27 +46,26 @@ class Breadcrumb extends Component {
         }
     };
 
-    render() {
-        let main, item;
-        let breadcrumb = '';
-        let title = 'Hoşgeldiniz';
-        if (this.state.main && this.state.main.type === 'collapse') {
+         const [breadcrumb,setBreadcrumb] = useState('');
+
+         let title = 'Hoşgeldiniz';
+        if (main && main.type === 'collapse') {
             main = (
                 <li className="breadcrumb-item">
-                    <a href={DEMO.BLANK_LINK}>{this.state.main.title}</a>
+                    <a href={DEMO.BLANK_LINK}>{main.title}</a>
                 </li>
             );
         }
 
-        if (this.state.item && this.state.item.type === 'item') {
-            title = this.state.item.title;
+        if (item && item.type === 'item') {
+            title = item.title;
             item = (
                 <li className="breadcrumb-item">
                     <a href={DEMO.BLANK_LINK}>{title}</a>
                 </li>
             );
 
-            if(this.state.item.breadcrumbs !== false) {
+            if(item.breadcrumbs !== false) {
                 breadcrumb = (
                     <div className="page-header">
                         <div className="page-block">
@@ -98,6 +98,6 @@ class Breadcrumb extends Component {
             </Aux>
         );
     }
-}
+
 
 export default Breadcrumb;

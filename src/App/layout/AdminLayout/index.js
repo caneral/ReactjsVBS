@@ -86,7 +86,7 @@ const AdminLayout = (props) => {
                                             <Suspense fallback={<Loader/>}>
                                                 <Switch>
                                                     {/* {menu} */}
-                                                    {/* <Redirect from="/" to={props.defaultPath} /> */}
+                                                    <Redirect exact from='/' to='/anasayfa'></Redirect>
                                                     <Route path="/odev/odevler" >
                                                         {
                                                             isUserLoggedIn ? admin ? <Odevler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
@@ -108,6 +108,7 @@ const AdminLayout = (props) => {
 
                                                         }
                                                     </Route>
+                                                    <Redirect to="/auth/signin" />
                                                 </Switch>
                                             </Suspense>
                                         </div>
