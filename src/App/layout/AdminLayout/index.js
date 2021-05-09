@@ -23,14 +23,9 @@ import Anasayfa from '../../../CustomView/Anasayfa';
 const AdminLayout = (props) => {
     const isUserLoggedIn = localStorage.getItem('user')
     const [admin,setShowAdminBoard] = useState(false);
+    const user = AuthService.getCurrentUser();
 
-    useEffect(() => {
-        const user = AuthService.getCurrentUser();
-        if (user) {
-          setShowAdminBoard(user.role.includes("Admin"));
-        }
-    
-      }, []);
+  
     // fullScreenExitHandler = () => {
     //     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
     //         props.onFullScreenExit();
@@ -89,17 +84,17 @@ const AdminLayout = (props) => {
                                                     <Redirect exact from='/' to='/anasayfa'></Redirect>
                                                     <Route path="/odev/odevler" >
                                                         {
-                                                            isUserLoggedIn ? admin ? <Odevler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                            isUserLoggedIn ? user.role.includes("Admin") ? <Odevler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
                                                         }
                                                     </Route>
                                                     <Route path="/odev/odev-olustur">
                                                     {
-                                                            isUserLoggedIn ? admin ? <OdevOlustur/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                            isUserLoggedIn ? user.role.includes("Admin") ? <OdevOlustur/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
                                                         }
                                                     </Route>
                                                     <Route path="/ogrenci/ogrenciler">
                                                     {
-                                                            isUserLoggedIn ? admin ? <Ogrenciler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                            isUserLoggedIn ? user.role.includes("Admin") ? <Ogrenciler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
                                                     }
                                                     </Route>
                                                     <Route path="/anasayfa">

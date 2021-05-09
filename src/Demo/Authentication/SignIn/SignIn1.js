@@ -2,11 +2,11 @@ import './../../../assets/scss/style.scss';
 import Aux from "../../../hoc/_Aux";
 import Breadcrumb from "../../../App/layout/AdminLayout/Breadcrumb";
 import Form from "react-validation/build/form";
-import React, { useState, useRef,useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AuthService from "../../../Services/AuthService";
-import {Redirect, useHistory} from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
-const SignUp1 = () => {
+const SignIn1 = () => {
   const history = useHistory();
 
   const isUserLoggedIn = localStorage.getItem('user')
@@ -42,7 +42,7 @@ const SignUp1 = () => {
       setError("Kullanıcı adı boş bırakılamaz.");
     } else if (password.length == 0) {
       setError("Şifre boş bırakılamaz.");
-    }else{
+    } else {
       setError("");
     }
   };
@@ -58,33 +58,33 @@ const SignUp1 = () => {
     setMessage("");
     setLoading(true);
 
-try {
-  AuthService.login(userName, password).then(
-    () => {
-      // window.location.reload();
-      history.push("/anasayfa");
-    },
-    (error) => {
-      if(error.message){
-        const resMessage = "Kullanıcı adı veya şifreniz hatalı.";
-        setLoading(false);
-        setMessage(resMessage);
-      }
-      // const resMessage =
-      //   (error.response &&
-      //     error.response.data &&
-      //     error.response.data.message) ||
-      //   error.message ||
-      //   error.toString();
+    try {
+      AuthService.login(userName, password).then(
+        () => {
+          // window.location.reload();
+          history.push("/anasayfa");
+        },
+        (error) => {
+          if (error.message) {
+            const resMessage = "Kullanıcı adı veya şifreniz hatalı.";
+            setLoading(false);
+            setMessage(resMessage);
+          }
+          // const resMessage =
+          //   (error.response &&
+          //     error.response.data &&
+          //     error.response.data.message) ||
+          //   error.message ||
+          //   error.toString();
 
 
+        }
+      );
+    } catch (error) {
+      alert(e.message);
     }
-  );
-} catch (error) {
-  alert(e.message);
-}
 
-   
+
 
   };
   return (
@@ -121,12 +121,12 @@ try {
                     onChange={onChangePassword} />
                 </div>
                 <div className="form-group">
-                <button className="btn btn-primary shadow-2 mb-1" disabled={loading}>
-              {loading && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              <span>Giriş Yap</span>
-            </button>
+                  <button className="btn btn-primary shadow-2 mb-1" disabled={loading}>
+                    {loading && (
+                      <span className="spinner-border spinner-border-sm"></span>
+                    )}
+                    <span>Giriş Yap</span>
+                  </button>
                 </div>
                 {message && (
                   <div className="form-group">
@@ -148,4 +148,4 @@ try {
 
 }
 
-export default SignUp1;
+export default SignIn1;
