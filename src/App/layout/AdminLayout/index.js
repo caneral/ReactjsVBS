@@ -15,10 +15,12 @@ import * as actionTypes from "../../../store/actions";
 
 import './app.scss';
 import Odevler from '../../../CustomView/Odevler';
+import Odevlerim from '../../../CustomView/Odevlerim';
 import OdevOlustur from '../../../CustomView/OdevOlustur';
 import Ogrenciler from '../../../CustomView/Ogrenciler';
 import AuthService from "../../../Services/AuthService";
 import Anasayfa from '../../../CustomView/Anasayfa';
+import Duyuru from '../../../CustomView/Duyuru';
 
 const AdminLayout = (props) => {
     const isUserLoggedIn = localStorage.getItem('user')
@@ -82,6 +84,16 @@ const AdminLayout = (props) => {
                                                 <Switch>
                                                     {/* {menu} */}
                                                     <Redirect exact from='/' to='/anasayfa'></Redirect>
+                                                    <Route path="/duyuru/duyuru-gonder" >
+                                                        {
+                                                            isUserLoggedIn ? user.role.includes("Admin") ? <Duyuru/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                        }
+                                                    </Route>
+                                                    <Route path="/odevler/odevlerim" >
+                                                        {
+                                                            isUserLoggedIn ? user.role.includes("Student") ? <Odevlerim/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                        }
+                                                    </Route>
                                                     <Route path="/odev/odevler" >
                                                         {
                                                             isUserLoggedIn ? user.role.includes("Admin") ? <Odevler/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
@@ -99,10 +111,11 @@ const AdminLayout = (props) => {
                                                     </Route>
                                                     <Route path="/anasayfa">
                                                         {
-                                                        isUserLoggedIn ? <Anasayfa/> : <Redirect to="/auth/signin"/>
+                                                        isUserLoggedIn ? user.role.includes("Admin") ? <Anasayfa/> : <Redirect to="/odevler/odevlerim"/> : <Redirect to="/auth/signin"/>
 
                                                         }
                                                     </Route>
+                                                    
                                                     <Redirect to="/auth/signin" />
                                                 </Switch>
                                             </Suspense>

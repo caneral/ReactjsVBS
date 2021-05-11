@@ -6,4 +6,7 @@ const URL = "https://caneral.me/vbsadmin";
 const getStudentList = () => {
   return Axios.get(`${URL}/api/Student/StudentList`, { headers: authHeader() });
 };
-export default {getStudentList};
+const getTotalStudentCount = () => {
+  return Axios.get(`${URL}/api/Student/GetTotalStudentCount`, { headers: authHeader() })
+};
+export default {getStudentList,getTotalStudentCount};

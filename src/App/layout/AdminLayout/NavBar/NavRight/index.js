@@ -18,7 +18,14 @@ const NavRight = (props) => {
         if(currentUser){
 
             setName(currentUser.name);
-            setRole(currentUser.role);
+            if(currentUser.role == "Teacher"){
+                setRole("Öğretmen")
+            }else if (currentUser.role == "Student"){
+
+                setRole("Öğrenci");
+            }else if (currentUser.role == "Admin"){
+                setRole("Yönetici")
+            }
         }
     }, [])
     const logOut = () => {

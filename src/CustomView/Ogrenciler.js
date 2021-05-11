@@ -34,7 +34,7 @@ const Ogrenciler = () => {
             <Row>
 
                 <Col>
-                    <Tabs defaultActiveKey="today" id="uncontrolled-tab-example">
+                    <Tabs defaultActiveKey="1/A" id="uncontrolled-tab-example">
                         <Tab eventKey="1/A" title="1/A">
                             <Card.Title as='h5'>Öğrenciler</Card.Title>
 

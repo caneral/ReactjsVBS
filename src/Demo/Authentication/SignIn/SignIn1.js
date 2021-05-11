@@ -15,7 +15,7 @@ const SignIn1 = () => {
   const form = useRef();
   const checkBtn = useRef();
 
-  const [userName, setTCNumber] = useState("");
+  const [tcNumber, setTCNumber] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errorM, setError] = useState("");
@@ -25,8 +25,8 @@ const SignIn1 = () => {
 
   //T.C numarasını tcnumber state ine at.
   const onChangeTCNumber = (e) => {
-    const userName = e.target.value;
-    setTCNumber(userName);
+    const tcNumber = e.target.value;
+    setTCNumber(tcNumber);
   };
 
   //Şifreyi password state ine at.
@@ -36,9 +36,9 @@ const SignIn1 = () => {
   };
 
   const onValidate = (e) => {
-    if (userName.length == 0 && password.length == 0) {
+    if (tcNumber.length == 0 && password.length == 0) {
       setError("Kullanıcı adı ve şifre boş bırakılamaz.");
-    } else if (userName.length == 0) {
+    } else if (tcNumber.length == 0) {
       setError("Kullanıcı adı boş bırakılamaz.");
     } else if (password.length == 0) {
       setError("Şifre boş bırakılamaz.");
@@ -51,7 +51,7 @@ const SignIn1 = () => {
 
   //Giriş yap butonuna bastıktan sonra
   const handleLogin = (e) => {
-
+ 
 
     e.preventDefault();
     onValidate();
@@ -59,10 +59,15 @@ const SignIn1 = () => {
     setLoading(true);
 
     try {
-      AuthService.login(userName, password).then(
+      AuthService.login(tcNumber, password).then(
         () => {
-          // window.location.reload();
-          history.push("/anasayfa");
+    const user = AuthService.getCurrentUser();
+
+          if(user.role == "Student"){
+            history.push("/odevler/odevlerim");
+          }else{
+            history.push("/anasayfa");
+          }
         },
         (error) => {
           if (error.message) {

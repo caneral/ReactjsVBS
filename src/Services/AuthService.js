@@ -3,10 +3,10 @@ import jwtDecode from 'jwt-decode';
 import { useHistory } from "react-router";
 const API_URL = "https://caneral.me/vbsadmin/api/v1/login";
 
-const login = (userName, password) => {
+const login = (tcNumber, password) => {
   return axios
     .post(API_URL, {
-      userName,
+      tcNumber,
       password,
     })
     .then((response) => {
@@ -43,7 +43,7 @@ const getCurrentUser = () => {
         email:decocedToken.email,
         name:decocedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
         role:decocedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-        id:decocedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+        userId:decocedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
       };    
       return userData;
     }

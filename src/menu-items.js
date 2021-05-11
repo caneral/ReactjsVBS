@@ -43,7 +43,7 @@ export default {
             title: 'ÖĞRENCİ',
             type: 'group',
             icon: 'icon-group',
-            role: 'User',
+            role: 'Admin',
             children: [
                 {
                     id: 'form-basic',
@@ -53,6 +53,39 @@ export default {
                     icon: 'feather icon-file-text'
                 }
             ]
-        }
+        },
+        {
+            id: 'ui-forms',
+            title: 'Ödevler',
+            type: 'group',
+            icon: 'icon-group',
+            role: 'Student',
+            children: [
+                {
+                    id: 'bootstrap',
+                    title: 'Ödevlerim',
+                    type: 'item',
+                    icon: 'feather icon-server',
+                    url: '/odevler/odevlerim'
+                }
+            ]
+        },
+        {
+            id: 'ui-forms',
+            title: 'DUYURU',
+            type: 'group',
+            icon: 'icon-group',
+            role: 'Admin',
+            children: [
+                {
+                    id: 'form-basic',
+                    title: 'Duyuru Gönder',
+                    type: 'item',
+                    url: '/duyuru/duyuru-gonder',
+                    icon: 'feather icon-message-circle'
+                }
+            ]
+        },
+        
     ]
 }
