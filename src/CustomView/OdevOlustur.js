@@ -92,6 +92,7 @@ const OdevOlustur = () => {
                                         <Form.Group controlId="exampleForm.ControlSelect1">
                                             <Form.Label>Sınıf Seçiniz</Form.Label>
                                             <Form.Control as="select" onChange={onChangeClass}>
+                                                <option selected disabled>Seçiniz</option>
                                                 {
                                                     classes.map((data, index) => {
                                                         const { id, name } = data
