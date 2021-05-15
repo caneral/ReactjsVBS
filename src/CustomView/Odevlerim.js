@@ -35,21 +35,21 @@ const Odevlerim = () => {
           const { id, courseName, homeworkSubject, homeworkDesc, fileId } = data
           const dersAdi = () => {
             if (courseName == "Matematik") {
-              return <Button variant={"warning"} style={{ width: 400 }}>
+              return <Button variant={"warning"} style={{ width: "100%" }}>
                 {courseName + " (" + homeworkSubject+")"}
               </Button>
             } else if (courseName == "Türkçe") {
-              return <Button variant={"danger"} style={{ width: 400 }}>
+              return <Button variant={"danger"} style={{ width: "100%" }}>
                 {courseName + " (" + homeworkSubject+")"}
 
               </Button>
             } else if (courseName == "Hayat Bilgisi") {
-              return <Button variant={"success"} style={{ width: 400 }}>
+              return <Button variant={"success"} style={{ width: "100%" }}>
                 {courseName + " (" + homeworkSubject+")"}
 
               </Button>
             } else {
-              return <Button variant={"primary"} style={{ width: 400 }}>
+              return <Button variant={"primary"} style={{ width: "100%" }}>
                 {courseName + " (" + homeworkSubject+")"}
 
               </Button>
@@ -60,9 +60,9 @@ const Odevlerim = () => {
             <Card key={index}>
               <Card.Header>
                 <Card.Title as="h5">
-                  {dersAdi()}
+                  {dersAdi() }
                   {
-                    fileId && <Button variant="dark" style={{ width: 200 }}><a href={'https://caneral.me/vbsadmin/api/HomeWork/GetHomeworkFile?odevId='+id} target="_blank" className="text-white" download>Dosyayı Görüntüle</a></Button>
+                    fileId && <Button variant="dark" style={{ width: "100%" }}><a href={'https://caneral.me/vbsadmin/api/HomeWork/GetHomeworkFile?odevId='+id} target="_blank" className="text-white" download>Dosyayı Görüntüle</a></Button>
                   }
 
                 </Card.Title>
