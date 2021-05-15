@@ -62,7 +62,7 @@ const Odevlerim = () => {
                 <Card.Title as="h5">
                   {dersAdi()}
                   {
-                    fileId && <Button variant="dark" style={{ width: 200 }}><a href={'https://localhost:44361/api/HomeWork/GetHomeworkFile?odevId='+id} target="_blank" className="text-white" download>Dosyayı Görüntüle</a></Button>
+                    fileId && <Button variant="dark" style={{ width: 200 }}><a href={'https://caneral.me/vbsadmin/api/HomeWork/GetHomeworkFile?odevId='+id} target="_blank" className="text-white" download>Dosyayı Görüntüle</a></Button>
                   }
 
                 </Card.Title>
