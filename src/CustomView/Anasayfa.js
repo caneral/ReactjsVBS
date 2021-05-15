@@ -9,11 +9,13 @@ import avatar2 from '../assets/images/user/avatar-2.jpg';
 import avatar3 from '../assets/images/user/avatar-3.jpg';
 import HomeWorkService from '../Services/HomeWorkService';
 import StudentService from '../Services/StudentService';
+import AnnouncementService from '../Services/AnnouncementService';
 const Anasayfa = () => {
 
     const [content, setContent] = useState([]);
     const [odevler, setOdevler] = useState([]);
     const [studentCount, setStudentCount] = useState([]);
+    const [annCount,setAnnCount] = useState([]);
     useEffect(() => {
         HomeWorkService.getTotalHomeWorkCount().then(
             (response) => {
@@ -43,6 +45,21 @@ const Anasayfa = () => {
                 error.toString();
 
                 setStudentCount(_studentC);
+            }
+        );
+        AnnouncementService.getTotalAnnouncementCount().then(
+            (response) => {
+                setAnnCount(response.data);
+            },
+            (error) => {
+                const _annCount = 
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+                setStudentCount(_annCount);
             }
         )
     }, []);
@@ -104,7 +121,7 @@ const Anasayfa = () => {
                                     <i className="feather icon-mail f-30 text-c-red" />
                                 </div>
                                 <div className="col">
-                                    <h3 className="f-w-300">32</h3>
+                                    <h3 className="f-w-300">{annCount}</h3>
                                     <span className="d-block text-uppercase">TOPLAM DUYURU SAYISI</span>
                                 </div>
                             </div>

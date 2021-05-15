@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Row, Col, Card, Badge,Button } from 'react-bootstrap';
+import { Row, Col, Card, Badge, Button,Modal } from 'react-bootstrap';
 
 import Aux from "../hoc/_Aux";
 
@@ -10,7 +10,6 @@ const Odevlerim = () => {
   const [content, setContent] = useState([]);
   const user = AuthService.getCurrentUser();
   useEffect(() => {
-    console.log(user.userId)
     HomeWorkService.getHomeWorkListWithClass(user.userId).then(
       (response) => {
         setContent(response.data);
@@ -29,56 +28,57 @@ const Odevlerim = () => {
   }, []);
   return (
     <Aux>
-      <Row>
-        <Col>
 
-          {
+      {
 
-            content.map((data, index) => {
-              const { id, courseName, homeworkSubject, homeworkDesc, className } = data
-              const ikon = () => {
-                if(courseName == "Matematik"){
-                  return <i className="feather icon-percent"/>
-                }else if(courseName == "Türkçe"){
-                  return <i className="feather icon-feather"/>
-                }else if(courseName == "Hayat Bilgisi"){
-                  return <i className="feather icon-sun"/>
-                }else{
-                  return <i className="feather icon-more-paperclip"/>
-                }
-              }
-              const dersAdi = () => {
-                if(courseName == "Matematik"){
-                  return <Button variant={"warning"} style={{width:200}}>
-                    {courseName}
+        content.map((data, index) => {
+          const { id, courseName, homeworkSubject, homeworkDesc, fileId } = data
+          const dersAdi = () => {
+            if (courseName == "Matematik") {
+              return <Button variant={"warning"} style={{ width: 400 }}>
+                {courseName + " (" + homeworkSubject+")"}
               </Button>
-                }else if(courseName == "Türkçe"){
-                 return <Button variant={"danger"} style={{width:200}}>
-                    {courseName}
+            } else if (courseName == "Türkçe") {
+              return <Button variant={"danger"} style={{ width: 400 }}>
+                {courseName + " (" + homeworkSubject+")"}
+
               </Button>
-                }else if(courseName == "Hayat Bilgisi"){
-                  return <Button variant={"success"} style={{width:200}}>
-                    {courseName}
+            } else if (courseName == "Hayat Bilgisi") {
+              return <Button variant={"success"} style={{ width: 400 }}>
+                {courseName + " (" + homeworkSubject+")"}
+
               </Button>
-                }
-              }
+            } else {
+              return <Button variant={"primary"} style={{ width: 400 }}>
+                {courseName + " (" + homeworkSubject+")"}
+
+              </Button>
+            }
+          }
+
+          return (
+            <Card key={index}>
+              <Card.Header>
+                <Card.Title as="h5">
+                  {dersAdi()}
+                  {
+                    fileId && <Button variant="dark" style={{ width: 200 }}><a href={'https://localhost:44361/api/HomeWork/GetHomeworkFile?odevId='+id} target="_blank" className="text-white" download>Dosyayı Görüntüle</a></Button>
+                  }
+
+                </Card.Title>
+                <span className="d-block m-t-5">{ }</span>
+              </Card.Header>
+              <Card.Body>
+                <h4>
+
+                  {homeworkDesc} </h4>
+              </Card.Body>
               
-              return (
-                <Card>
-                  <Card.Header>
-                    <Card.Title as="h5">  {dersAdi()}</Card.Title>
-                    <span className="d-block m-t-5">{homeworkSubject}</span>
-                  </Card.Header>
-                  <Card.Body>
-                     <h4>{homeworkDesc} </h4>
-                  </Card.Body>
-                </Card>
-                    )
-                    })
-                    }
-            
-        </Col>
-      </Row>
+            </Card>
+
+          );
+        })
+      }
     </Aux>
   );
 

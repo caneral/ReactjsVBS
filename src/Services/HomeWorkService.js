@@ -24,10 +24,16 @@ const addHomeWork = (courseName, homeworkSubject, homeworkDesc, classId) => {
 
 };
 
+const addHomeWorkFile = (odevId,file) => {
+  return Axios
+    .post(`${URL}/api/HomeWork/HomeWorkFileAdd?odevId=${odevId}`,file, { headers: authHeader() })
+
+};
+
 const getTotalHomeWorkCount = () => {
   return Axios.get(`${URL}/api/HomeWork/GetTotalHomeWorkCount`, { headers: authHeader() })
 };
 const getClassList = () => {
   return Axios.get(`${URL}/api/Class/ClassList`, { headers: authHeader() })
 };
-export default { addHomeWork, getHomeWorkList, getClassList, getHomeWorkListWithClass,getTotalHomeWorkCount,getLastAdded5HomeWorks };
+export default { addHomeWork, getHomeWorkList, getClassList, getHomeWorkListWithClass,getTotalHomeWorkCount,getLastAdded5HomeWorks,addHomeWorkFile };

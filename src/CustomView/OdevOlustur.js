@@ -15,6 +15,7 @@ const OdevOlustur = () => {
     const [homeworkDesc, setDesc] = useState("");
     const [classId, setClass] = useState("");
     const [classes, setClasses] = useState([]);
+    const [fileH, setFile] = useState(null);
 
     const onChangeCourseName = (e) => {
         const courseName = e.target.value;
@@ -31,15 +32,36 @@ const OdevOlustur = () => {
     const onChangeClass = (e) => {
         const classId = e.target.value;
         setClass(classId);
-        console.log("SEÇİLEN DEĞER:",classId);
+    };
+    const onChangeFile = (e) => {
+        const fileH = e.target.files[0];
+        setFile(fileH);
     };
 
     const homeWorkAdd = (e) => {
         e.preventDefault();
         try {
             HomeWorkService.addHomeWork(courseName, homeworkSubject, homeworkDesc, classId).then(
-                () => {
-                    history.push("/anasayfa");
+                (response) => {
+                    const file = new FormData();
+                    console.log("Öncesi:",file);
+
+                    file.append('file',fileH);
+                    console.log("Sonrası:",file);
+
+                    HomeWorkService.addHomeWorkFile(response.data,file).then(
+                        () => {
+                            history.push("/anasayfa");
+                        },
+                        (error) => {
+                            const resMessage =
+                                (error.response &&
+                                    error.response.data &&
+                                    error.response.data.message) ||
+                                error.message ||
+                                error.toString();
+                        }
+                    );
                 },
                 (error) => {
                     const resMessage =
@@ -50,6 +72,7 @@ const OdevOlustur = () => {
                         error.toString();
                 }
             );
+            
         } catch (error) {
             alert(e.message);
 
@@ -82,7 +105,6 @@ const OdevOlustur = () => {
                     <Card>
                         <Card.Header>
                             <Card.Title as="h5">Ödev Oluştur</Card.Title>
-
                         </Card.Header>
                         <Card.Body>
                             <Form onSubmit={homeWorkAdd} ref={form}>
@@ -123,12 +145,17 @@ const OdevOlustur = () => {
                                                 onChange={onChangeDesc} />
                                         </Form.Group>
                                     </Col>
-                                    <Col>
+                                    <Col md={12}>
+                                        <Form.Group>
+                                        <Form.File id="exampleFormControlFile1" label="Dosya ekle" accept="image/*" onChange={onChangeFile}/>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={12}>
 
                                         <Button variant="primary" type="submit">Gönder</Button>
                                     </Col>
-                                    {/* Tasarımı ayarla. */}
                                 </Row>
+
                             </Form>
 
                         </Card.Body>
