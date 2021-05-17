@@ -21,6 +21,7 @@ import Ogrenciler from '../../../CustomView/Ogrenciler';
 import AuthService from "../../../Services/AuthService";
 import Anasayfa from '../../../CustomView/Anasayfa';
 import Duyuru from '../../../CustomView/Duyuru';
+import Toplanti from '../../../CustomView/Toplanti';
 
 const AdminLayout = (props) => {
     const isUserLoggedIn = localStorage.getItem('user')
@@ -84,6 +85,11 @@ const AdminLayout = (props) => {
                                                 <Switch>
                                                     {/* {menu} */}
                                                     <Redirect exact from='/' to='/anasayfa'></Redirect>
+                                                    <Route path="/veli/veli-toplanti">
+                                                        {
+                                                            isUserLoggedIn ? user.role.includes("Admin") ? <Toplanti/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>
+                                                        }
+                                                    </Route>
                                                     <Route path="/duyuru/duyuru-gonder" >
                                                         {
                                                             isUserLoggedIn ? user.role.includes("Admin") ? <Duyuru/> : <Redirect to="/anasayfa"/> : <Redirect to="/auth/signin"/>

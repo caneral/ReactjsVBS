@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import { Row, Col, Card, Form, Button, Toast } from 'react-bootstrap';
-// import Form from "react-validation/build/form";
 
 import Aux from "../hoc/_Aux";
 import HomeWorkService from "../Services/HomeWorkService";
@@ -16,6 +15,16 @@ const OdevOlustur = () => {
     const [classId, setClass] = useState("");
     const [classes, setClasses] = useState([]);
     const [fileH, setFile] = useState(null);
+
+
+    //Hata mesajları
+    const [courseNameErr, setCourseNameErr] = useState({});
+    const [homeworkSubjectErr, setSubjectErr] = useState({});
+    const [homeworkDescErr, setDescErr] = useState({});
+    const [classIdErr, setClassErr] = useState({});
+
+    
+
 
     const onChangeCourseName = (e) => {
         const courseName = e.target.value;
@@ -41,37 +50,42 @@ const OdevOlustur = () => {
     const homeWorkAdd = (e) => {
         e.preventDefault();
         try {
-            HomeWorkService.addHomeWork(courseName, homeworkSubject, homeworkDesc, classId).then(
-                (response) => {
-                    const file = new FormData();
-                    console.log("Öncesi:",file);
-
-                    file.append('file',fileH);
-                    console.log("Sonrası:",file);
-
-                    HomeWorkService.addHomeWorkFile(response.data,file).then(
-                        () => {
+            const isValid = formValidation();
+            if(isValid){
+                HomeWorkService.addHomeWork(courseName, homeworkSubject, homeworkDesc, classId).then(
+                    (response) => {
+                        if(fileH){
+                            const file = new FormData();    
+                            file.append('file',fileH);
+                            HomeWorkService.addHomeWorkFile(response.data,file).then(
+                                () => {
+                                    history.push("/anasayfa");
+                                },
+                                (error) => {
+                                    const resMessage =
+                                        (error.response &&
+                                            error.response.data &&
+                                            error.response.data.message) ||
+                                        error.message ||
+                                        error.toString();
+                                }
+                            );
+                        }else{
                             history.push("/anasayfa");
-                        },
-                        (error) => {
-                            const resMessage =
-                                (error.response &&
-                                    error.response.data &&
-                                    error.response.data.message) ||
-                                error.message ||
-                                error.toString();
                         }
-                    );
-                },
-                (error) => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
-                }
-            );
+                        
+                    },
+                    (error) => {
+                        const resMessage =
+                            (error.response &&
+                                error.response.data &&
+                                error.response.data.message) ||
+                            error.message ||
+                            error.toString();
+                    }
+                );
+            }
+            
             
         } catch (error) {
             alert(e.message);
@@ -80,6 +94,50 @@ const OdevOlustur = () => {
 
 
     };
+    const formValidation = () => {
+        const courseNameErr = {};
+        const homeworkSubjectErr = {};
+        const homeworkDescErr = {};
+        const classIdErr = {};
+
+        let isValid = true;
+
+        if(courseName.trim().length>0 && courseName.trim().length < 3){
+            courseNameErr.courseNameShort = "Ders adı en az 3 karakter olmalıdır.";
+            isValid = false;
+        }
+        if(courseName.trim().length == 0){
+            courseNameErr.courseNameEmpty = "Bu alan boş bırakılamaz."
+            isValid = false;
+        }
+        if(homeworkSubject.trim().length>0 && homeworkSubject.trim().length < 3){
+            homeworkSubjectErr.homeworkSubjectShort = "Ödev konusu en az 3 karakter olmalıdır.";
+            isValid = false;
+        }
+        if(homeworkSubject.trim().length == 0){
+            homeworkSubjectErr.homeworkSubjectEmpty = "Bu alan boş bırakılamaz."
+            isValid = false;
+        }
+
+        if(homeworkDesc.trim().length>0 && homeworkDesc.trim().length < 10){
+            homeworkDescErr.homeworkDescShort = "Ödev Açıklaması en az 10 karakter olmalıdır.";
+            isValid = false;
+        }
+        if(homeworkDesc.trim().length == 0){
+            homeworkDescErr.homeworkDescEmpty = "Bu alan boş bırakılamaz."
+            isValid = false;
+        }
+        if(classId.length == 0){
+            classIdErr.classIdEmpty = "Lütfen sınıf seçiniz."
+            isValid = false;
+        }
+
+        setCourseNameErr(courseNameErr);
+        setSubjectErr(homeworkSubjectErr);
+        setDescErr(homeworkDescErr);
+        setClassErr(classIdErr);
+        return isValid;
+    }
     useEffect(() => {
         HomeWorkService.getClassList().then(
             (response) => {
@@ -123,7 +181,11 @@ const OdevOlustur = () => {
                                                         )
                                                     })
                                                 }
+                                                
                                             </Form.Control>
+                                            {Object.keys(classIdErr).map((key) => {
+                                                    return <div style={{color:"red"}}>{classIdErr[key]}</div>
+                                            })}
                                         </Form.Group>
                                         <Form.Group controlId="exampleForm.ControlForm.Control1">
                                             <Form.Label>Ders Adı</Form.Label>
@@ -131,11 +193,17 @@ const OdevOlustur = () => {
                                                 type="text"
                                                 placeholder="Matematik, Türkçe,..."
                                                 onChange={onChangeCourseName} />
+                                            {Object.keys(courseNameErr).map((key) => {
+                                                    return <div style={{color:"red"}}>{courseNameErr[key]}</div>
+                                            })}
                                         </Form.Group>
                                         <Form.Group controlId="exampleForm.ControlForm.Control1">
                                             <Form.Label>Ödev Konusu</Form.Label>
                                             <Form.Control type="text" placeholder="Matematik, Türkçe,..."
                                                 onChange={onChangeSubject} />
+                                            {Object.keys(homeworkSubjectErr).map((key) => {
+                                                    return <div style={{color:"red"}}>{homeworkSubjectErr[key]}</div>
+                                            })}
                                         </Form.Group>
                                     </Col>
                                     <Col md={6}>
@@ -143,6 +211,9 @@ const OdevOlustur = () => {
                                             <Form.Label>Ödev Açıklaması</Form.Label>
                                             <Form.Control as="textarea" rows="10" style={{ height: 218, resize: 'none' }}
                                                 onChange={onChangeDesc} />
+                                                {Object.keys(homeworkDescErr).map((key) => {
+                                                    return <div style={{color:"red"}}>{homeworkDescErr[key]}</div>
+                                            })}
                                         </Form.Group>
                                     </Col>
                                     <Col md={12}>
