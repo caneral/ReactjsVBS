@@ -6,8 +6,11 @@ import Aux from "../hoc/_Aux";
 
 import HomeWorkService from '../Services/HomeWorkService';
 import AuthService from '../Services/AuthService';
+import MeetService from '../Services/MeetService';
+
 const Odevlerim = () => {
   const [content, setContent] = useState([]);
+  const [meet,setMeet] = useState([]);
   const user = AuthService.getCurrentUser();
   useEffect(() => {
     HomeWorkService.getHomeWorkListWithClass(user.userId).then(
@@ -26,9 +29,46 @@ const Odevlerim = () => {
       }
     );
   }, []);
+  useEffect(() => {
+    MeetService.getMeet(user.userId).then(
+      (response) => {
+        setMeet(response.data);
+      },
+      (error) => {
+        const _meet =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setMeet(_meet);
+      }
+    );
+  }, []);
+  const meetOnayla = (id) => {
+    MeetService.updateMeet(id).then(() => {
+      window.location.reload();
+    })
+  }
   return (
     <Aux>
-
+     {
+       meet &&  <Card bg="dark">
+       <Card.Header className="text-center ">
+         <Card.Title className="text-white" >
+           {
+             meet.meetDate
+           }
+         </Card.Title>
+         <span className="d-block">Öğretmen: {meet.teacherFullName} - Toplantı İsteği Gönderdi</span>
+       </Card.Header>
+       <Card.Body className="text-center">
+       <Button variant={"danger"} onClick={() => meetOnayla(meet.id)}>ONAYLA</Button>
+       </Card.Body>
+       
+     </Card>
+     }
       {
 
         content.map((data, index) => {
@@ -57,7 +97,7 @@ const Odevlerim = () => {
           }
 
           return (
-            <Card key={index}>
+          <Card  className="box">
               <Card.Header>
                 <Card.Title as="h5">
                   {dersAdi() }
@@ -75,6 +115,8 @@ const Odevlerim = () => {
               </Card.Body>
               
             </Card>
+          
+            
 
           );
         })

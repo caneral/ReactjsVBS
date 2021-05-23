@@ -13,4 +13,12 @@ const addMeet = (meetDate,studentId,teacherId) => {
   { headers: authHeader() });
 };
 
-export default {addMeet};
+const getMeet =(studentId) => {
+  return Axios.get(`${URL}/api/Meet/GetMeetById/${studentId}`,{headers: authHeader()});
+};
+
+const updateMeet = (id) => {
+  return Axios.put(`${URL}/api/Meet/UpdateMeet/${id}`,{headers: authHeader()});
+}
+
+export default {addMeet,getMeet,updateMeet};
