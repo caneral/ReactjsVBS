@@ -11,6 +11,7 @@ import MeetService from '../Services/MeetService';
 const Odevlerim = () => {
   const [content, setContent] = useState([]);
   const [meet,setMeet] = useState([]);
+  const [show,setShow] = useState(false);
   const user = AuthService.getCurrentUser();
   useEffect(() => {
     HomeWorkService.getHomeWorkListWithClass(user.userId).then(
@@ -28,11 +29,15 @@ const Odevlerim = () => {
         setContent(_content);
       }
     );
+    
   }, []);
   useEffect(() => {
     MeetService.getMeet(user.userId).then(
       (response) => {
         setMeet(response.data);
+        if(response.data){
+          setShow(true);
+        }
       },
       (error) => {
         const _meet =
@@ -51,23 +56,26 @@ const Odevlerim = () => {
       window.location.reload();
     })
   }
+  const toplantiIstegi = () => {
+    return (<Card bg="dark">
+    <Card.Header className="text-center ">
+      <Card.Title className="text-white" >
+        {
+          meet.meetDate
+        }
+      </Card.Title>
+      <span className="d-block">Öğretmen: {meet.teacherFullName} - Toplantı İsteği Gönderdi</span>
+    </Card.Header>
+    <Card.Body className="text-center">
+    <Button variant={"danger"} onClick={() => meetOnayla(meet.id)}>ONAYLA</Button>
+    </Card.Body>
+    
+  </Card>);
+  }
   return (
     <Aux>
      {
-       meet &&  <Card bg="dark">
-       <Card.Header className="text-center ">
-         <Card.Title className="text-white" >
-           {
-             meet.meetDate
-           }
-         </Card.Title>
-         <span className="d-block">Öğretmen: {meet.teacherFullName} - Toplantı İsteği Gönderdi</span>
-       </Card.Header>
-       <Card.Body className="text-center">
-       <Button variant={"danger"} onClick={() => meetOnayla(meet.id)}>ONAYLA</Button>
-       </Card.Body>
-       
-     </Card>
+       show &&  toplantiIstegi()
      }
       {
 

@@ -51,6 +51,13 @@ export default {
                     type: 'item',
                     url: '/ogrenci/ogrenciler',
                     icon: 'feather icon-file-text'
+                },
+                {
+                    id: 'form-basic',
+                    title: 'Toplantı İstekleri',
+                    type: 'item',
+                    url: '/ogrenci/toplanti-istekleri',
+                    icon: 'feather icon-calendar'
                 }
             ]
         },

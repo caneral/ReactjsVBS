@@ -21,4 +21,8 @@ const updateMeet = (id) => {
   return Axios.put(`${URL}/api/Meet/UpdateMeet/${id}`,{headers: authHeader()});
 }
 
-export default {addMeet,getMeet,updateMeet};
+const getMeetList = () => {
+  return Axios.get(`${URL}/api/Meet/GetMeetList`,{headers: authHeader()});
+}
+
+export default {addMeet,getMeet,updateMeet,getMeetList};
