@@ -1,7 +1,8 @@
 import axios from "axios";
 import jwtDecode from 'jwt-decode';
 import { useHistory } from "react-router";
-const API_URL = "https://caneral.me/vbsadmin/api/v1/login";
+// const API_URL = "https://caneral.me/vbsadmin/api/v1/login";
+const API_URL = "backend:8081/api/v1/login"
 
 const login = (tcNumber, password) => {
   return axios
